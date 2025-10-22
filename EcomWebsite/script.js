@@ -1,67 +1,82 @@
-const products = [
-  { id: 1, name: "T-Shirt", price: 20, image: "D://Albin/Playwright/EcomWebsite/150?text=Tshirt1" },
-  { id: 2, name: "Jeans", price: 40, image: "https://via.placeholder.com/150?text=Jeans" },
-  { id: 3, name: "Sneakers", price: 60, image: "https://via.placeholder.com/150?text=Sneakers" },
-];
+document.addEventListener("DOMContentLoaded", () => {
+  const productForm = document.getElementById("productForm");
+  const productsContainer = document.getElementById("productsContainer");
+  const productId = document.getElementById("productId");
+  const productName = document.getElementById("productName");
+  const productPrice = document.getElementById("productPrice");
+  const productImage = document.getElementById("productImage");
 
-const productsContainer = document.getElementById("products");
-const cartBtn = document.getElementById("cart-btn");
-const cartSection = document.getElementById("cart");
-const closeCartBtn = document.getElementById("close-cart");
-const cartItemsContainer = document.getElementById("cart-items");
-const cartCount = document.getElementById("cart-count");
-const cartTotal = document.getElementById("cart-total");
+  // Load products
+  let products = JSON.parse(localStorage.getItem("products")) || [];
 
-let cart = [];
+  const saveToLocalStorage = () => {
+    localStorage.setItem("products", JSON.stringify(products));
+  };
 
-function renderProducts() {
-  productsContainer.innerHTML = "";
-  products.forEach(product => {
-    const productEl = document.createElement("div");
-    productEl.classList.add("product");
-    productEl.innerHTML = `
-      <img src="${product.image}" alt="${product.name}" />
-      <h3>${product.name}</h3>
-      <p>$${product.price}</p>
-      <button data-id="${product.id}">Add to Cart</button>
-    `;
-    productsContainer.appendChild(productEl);
-  });
-}
-
-function updateCart() {
-  cartCount.textContent = cart.length;
-  cartItemsContainer.innerHTML = "";
-  let total = 0;
-
-  cart.forEach(item => {
-    total += item.price;
-    const li = document.createElement("li");
-    li.textContent = `${item.name} - $${item.price}`;
-    cartItemsContainer.appendChild(li);
-  });
-
-  cartTotal.textContent = total.toFixed(2);
-}
-
-productsContainer.addEventListener("click", (e) => {
-  if (e.target.tagName === "BUTTON") {
-    const id = parseInt(e.target.getAttribute("data-id"));
-    const product = products.find(p => p.id === id);
-    if (product) {
-      cart.push(product);
-      updateCart();
+  const renderProducts = () => {
+    productsContainer.innerHTML = "";
+    if (products.length === 0) {
+      productsContainer.innerHTML = "<p>No products available.</p>";
+      return;
     }
-  }
-});
 
-cartBtn.addEventListener("click", () => {
-  cartSection.classList.toggle("hidden");
-});
+    products.forEach((p, index) => {
+      const card = document.createElement("div");
+      card.classList.add("product-card");
+      card.innerHTML = `
+        <img src="${p.image}" alt="${p.name}" />
+        <h3>${p.name}</h3>
+        <p class="price">$${p.price}</p>
+        <button class="edit-btn" onclick="editProduct(${index})">Edit</button>
+        <button class="delete-btn" onclick="deleteProduct(${index})">Delete</button>
+      `;
+      productsContainer.appendChild(card);
+    });
+  };
 
-closeCartBtn.addEventListener("click", () => {
-  cartSection.classList.add("hidden");
-});
+  // Add or Update product
+  productForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-renderProducts();
-updateCart();
+    const newProduct = {
+      id: productId.value ? parseInt(productId.value) : Date.now(),
+      name: productName.value,
+      price: parseFloat(productPrice.value).toFixed(2),
+      image: productImage.value
+    };
+
+    if (productId.value) {
+      // Update
+      const index = products.findIndex(p => p.id == newProduct.id);
+      products[index] = newProduct;
+    } else {
+      // Insert
+      products.push(newProduct);
+    }
+
+    saveToLocalStorage();
+    renderProducts();
+    productForm.reset();
+    productId.value = "";
+  });
+
+  // Expose edit and delete functions globally
+  window.editProduct = (index) => {
+    const p = products[index];
+    productId.value = p.id;
+    productName.value = p.name;
+    productPrice.value = p.price;
+    productImage.value = p.image;
+  };
+
+  window.deleteProduct = (index) => {
+    if (confirm("Delete this product?")) {
+      products.splice(index, 1);
+      saveToLocalStorage();
+      renderProducts();
+    }
+  };
+
+  // Initial render
+  renderProducts();
+});

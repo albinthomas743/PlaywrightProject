@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    tools {
+    //tools {
         //nodejs 'Node25'
-    }
+    //}
 
     options {
         timestamps()

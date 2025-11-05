@@ -57,9 +57,9 @@ h1 {
     margin-bottom: 20px;
 }
 
-.checkout {
+button {
     padding: 10px 20px;
-    background-color: green;
+    background-color: #4CAF50;
     color: white;
     cursor: pointer;
 }

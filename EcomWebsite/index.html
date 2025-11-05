@@ -1,34 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simple E-Commerce</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eCommerce Website</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>🛍️ Simple E-Commerce</h1>
-  </header>
-
-  <main>
-    <section class="form-section">
-      <h2>Add / Edit Product</h2>
-      <form id="productForm">
-        <input type="hidden" id="productId" />
-        <input type="text" id="productName" placeholder="Product Name" required />
-        <input type="number" id="productPrice" placeholder="Price ($)" required />
-        <input type="text" id="productImage" placeholder="Image URL" required />
-        <button type="submit">Save Product</button>
-      </form>
+    <header>
+        <h1>My eCommerce Store</h1>
+        <div class="cart">
+            <a href="#cart">Cart (0)</a>
+        </div>
+    </header>
+    
+    <section class="products">
+        <div class="product" id="product1">
+            <img src="https://via.placeholder.com/150" alt="Product 1">
+            <h2>Product 1</h2>
+            <p>$25.00</p>
+            <button class="add-to-cart" data-product-id="product1">Add to Cart</button>
+        </div>
+        <div class="product" id="product2">
+            <img src="https://via.placeholder.com/150" alt="Product 2">
+            <h2>Product 2</h2>
+            <p>$30.00</p>
+            <button class="add-to-cart" data-product-id="product2">Add to Cart</button>
+        </div>
     </section>
 
-    <section class="product-list">
-      <h2>Product List</h2>
-      <div id="productsContainer" class="grid"></div>
+    <section class="cart-modal" id="cart-modal" style="display: none;">
+        <div class="cart-items">
+            <!-- Cart items will appear here -->
+        </div>
+        <button class="checkout">Checkout</button>
     </section>
-  </main>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

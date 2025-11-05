@@ -1,107 +1,65 @@
-* {
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-
 body {
-  margin: 0;
-  background: #f5f6fa;
-  color: #333;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f9f9f9;
 }
 
 header {
-  background: #2d3436;
-  color: #fff;
-  text-align: center;
-  padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-main {
-  width: 90%;
-  max-width: 1000px;
-  margin: 2rem auto;
+h1 {
+    font-size: 2rem;
 }
 
-.form-section {
-  background: #fff;
-  padding: 1rem;
-  border-radius: 6px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  margin-bottom: 2rem;
+.cart {
+    font-size: 1.2rem;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
+.products {
+    display: flex;
+    gap: 20px;
 }
 
-form input, form button {
-  padding: 0.8rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+.product {
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+    background-color: white;
 }
 
-form button {
-  background: #0984e3;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s;
+.product img {
+    width: 100%;
 }
 
-form button:hover {
-  background: #74b9ff;
+.add-to-cart {
+    margin-top: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
 }
 
-.product-list h2 {
-  margin-bottom: 1rem;
+.cart-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ddd;
+    display: none;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1rem;
+.cart-items {
+    margin-bottom: 20px;
 }
 
-.product-card {
-  background: #fff;
-  border-radius: 6px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  text-align: center;
-  padding-bottom: 1rem;
-}
-
-.product-card img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-}
-
-.product-card h3 {
-  margin: 0.5rem 0;
-}
-
-.product-card .price {
-  color: #0984e3;
-  font-weight: bold;
-}
-
-.product-card button {
-  margin: 0.3rem;
-  padding: 0.4rem 0.8rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  color: white;
-  font-size: 0.9rem;
-}
-
-.edit-btn {
-  background: #00b894;
-}
-
-.delete-btn {
-  background: #d63031;
+.checkout {
+    padding: 10px 20px;
+    background-color: green;
+    color: white;
+    cursor: pointer;
 }

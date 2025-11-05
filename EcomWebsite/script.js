@@ -1,82 +1,38 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const productForm = document.getElementById("productForm");
-  const productsContainer = document.getElementById("productsContainer");
-  const productId = document.getElementById("productId");
-  const productName = document.getElementById("productName");
-  const productPrice = document.getElementById("productPrice");
-  const productImage = document.getElementById("productImage");
+let cart = [];
 
-  // Load products
-  let products = JSON.parse(localStorage.getItem("products")) || [];
+function updateCart() {
+    const cartCount = document.querySelector('.cart a');
+    cartCount.textContent = `Cart (${cart.length})`;
 
-  const saveToLocalStorage = () => {
-    localStorage.setItem("products", JSON.stringify(products));
-  };
+    const cartModal = document.getElementById('cart-modal');
+    const cartItemsContainer = document.querySelector('.cart-items');
 
-  const renderProducts = () => {
-    productsContainer.innerHTML = "";
-    if (products.length === 0) {
-      productsContainer.innerHTML = "<p>No products available.</p>";
-      return;
-    }
+    // Clear current cart items
+    cartItemsContainer.innerHTML = '';
 
-    products.forEach((p, index) => {
-      const card = document.createElement("div");
-      card.classList.add("product-card");
-      card.innerHTML = `
-        <img src="${p.image}" alt="${p.name}" />
-        <h3>${p.name}</h3>
-        <p class="price">$${p.price}</p>
-        <button class="edit-btn" onclick="editProduct(${index})">Edit</button>
-        <button class="delete-btn" onclick="deleteProduct(${index})">Delete</button>
-      `;
-      productsContainer.appendChild(card);
-    });
-  };
-
-  // Add or Update product
-  productForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const newProduct = {
-      id: productId.value ? parseInt(productId.value) : Date.now(),
-      name: productName.value,
-      price: parseFloat(productPrice.value).toFixed(2),
-      image: productImage.value
-    };
-
-    if (productId.value) {
-      // Update
-      const index = products.findIndex(p => p.id == newProduct.id);
-      products[index] = newProduct;
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
     } else {
-      // Insert
-      products.push(newProduct);
+        cart.forEach(item => {
+            const cartItem = document.createElement('div');
+            cartItem.textContent = item;
+            cartItemsContainer.appendChild(cartItem);
+        });
     }
 
-    saveToLocalStorage();
-    renderProducts();
-    productForm.reset();
-    productId.value = "";
-  });
+    cartModal.style.display = cart.length > 0 ? 'block' : 'none';
+}
 
-  // Expose edit and delete functions globally
-  window.editProduct = (index) => {
-    const p = products[index];
-    productId.value = p.id;
-    productName.value = p.name;
-    productPrice.value = p.price;
-    productImage.value = p.image;
-  };
+document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', () => {
+        const productId = button.getAttribute('data-product-id');
+        cart.push(productId);
+        updateCart();
+    });
+});
 
-  window.deleteProduct = (index) => {
-    if (confirm("Delete this product?")) {
-      products.splice(index, 1);
-      saveToLocalStorage();
-      renderProducts();
-    }
-  };
-
-  // Initial render
-  renderProducts();
+document.querySelector('.checkout')?.addEventListener('click', () => {
+    alert('Proceeding to checkout!');
+    cart = [];
+    updateCart();
 });
